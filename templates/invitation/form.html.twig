@@ -1,0 +1,22 @@
+{% extends 'layout/form.html.twig' %}
+
+{% block page_form %}
+    <form method="post">
+        <div class="kt-portlet__body">
+            {{ form_row(form.title) }}
+            {{ form_row(form.content) }}
+            {{ form_row(form.guest) }}
+            {{ form_row(form.invited_at) }}
+        </div>
+        {{ form_rest(form) }}
+        <div class="kt-portlet__foot">
+            <div class="kt-form__actions kt-form__actions--right">
+                <div class="row">
+                    <div class="col kt-align-left">
+                        <button class="btn btn-primary" type="submit">Envoyer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock  %}

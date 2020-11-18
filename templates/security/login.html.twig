@@ -1,0 +1,74 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'app.security.login.meta.title'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="kt-grid kt-grid--ver kt-grid--root">
+        <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v4 kt-login--signin" id="kt_login">
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style="background-image: url({{ asset('build/images/bg-2.jpg') }});">
+                <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
+                    <div class="kt-login__container">
+                        <div class="kt-login__logo">
+                            <a href="">
+                                <img src="#" width="300">
+                            </a>
+                        </div>
+                        <div class="kt-login__signin">
+                            <div class="kt-login__head">
+                                <h3 class="kt-login__title">{{ 'app.login.page.title'|trans }}</h3>
+                            </div>
+
+                            {% set successMsgs = app.session.flashbag.get('resetSuccess') %}
+
+                            {% if error %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error.messageKey|trans(error.messageData, 'security')
+                                        | replace({'%IP%' : app.request.clientIp()})
+                                        | raw
+                                    }}
+                                </div>
+                            {% elseif successMsgs|length > 0 %}
+                                <div class="alert alert-info" role="alert">
+                                    {% for alert in successMsgs %}
+                                        {{ alert|trans }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'name': 'form_login', 'class': 'kt-form'}}) }}
+                                <div class="input-group">
+                                    {{ form_widget(form.email, {'value' : last_username}) }}
+                                </div>
+
+                                <div class="input-group">
+                                    {{ form_widget(form.password) }}
+                                </div>
+
+                                <div class="row kt-login__extra">
+                                    <div class="col">
+                                        <label class="kt-checkbox">
+                                            {{ 'app.login.remeber_me'|trans }}
+                                            <span></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="col kt-align-right">
+                                        <a href="" id="kt_login_forgot" class="kt-login__link">
+                                            {{ 'app.login.forget_password'|trans }}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="kt-login__actions">
+                                    <button id="kt_login_signin_submit" class="btn btn-brand btn-pill kt-login__btn-primary">
+                                        {{ 'app.login.sign_in'|trans }}
+                                    </button>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% if form is defined %}
+    {% form_theme form 'form/form_theme.html.twig' %}
+{% endif %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="kt-section__content kt-portlet">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            {% block page_title %}{% endblock %}
+                        </h3>
+                    </div>
+                </div>
+
+                {% block page_form %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

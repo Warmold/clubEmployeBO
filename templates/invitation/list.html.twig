@@ -1,0 +1,92 @@
+{% extends 'layout.html.twig' %}
+
+ {% block subheader_actions_left %}
+     <a href="{{ path('invitation_add') }}" class="btn btn-light-primary font-weight-bolder btn-sm">Envoyer une invitation</a>
+ {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="kt-portlet kt-portlet--height-fluid kt-portlet--mobile ">
+                <div class="kt-portlet__head kt-portlet__head--lg kt-portlet__head--break-sm">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Invitation envoyé
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="kt-portlet__body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="kt-datatable__table">
+                            <thead>
+                            <tr class="text-uppercase">
+                                <th class="align-middle text-left"><span>Titre</span></th>
+                                <th class="align-middle text-left"><span>Date</span></th>
+                                <th class="align-middle text-left"><span>Envoyé À</span></th>
+                                <th class="align-middle text-left"><span>Statut</span></th>
+                            </tr>
+                            </thead>
+                            <tbody class="">
+                                {% for invitation in invitations %}
+                                     {% if invitation.sender.email == app.user.email %}
+                                        <tr>
+                                         <td>{{ invitation.title }}</td>
+                                         <td>{{ invitation.invited_at|date('d/M/Y') }}</td>
+                                         <td>{{ invitation.sender.username }}</td>
+                                         <td>{{ invitation.state }}</td>
+                                     </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6">
+            <div class="kt-portlet kt-portlet--height-fluid kt-portlet--mobile ">
+                <div class="kt-portlet__head kt-portlet__head--lg kt-portlet__head--break-sm">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Invitation reçu
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="kt-portlet__body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="kt-datatable__table">
+                            <thead>
+                            <tr class="text-uppercase">
+                                <th class="align-middle text-left"><span>Titre</span></th>
+                                <th class="align-middle text-left"><span>Envoyer Par</span></th>
+                                <th class="align-middle text-left"><span>Date</span></th>
+                                <th class="align-middle text-left"><span>Statut</span></th>
+                                <th class="align-middle text-left"><span>Action</span></th>
+                            </tr>
+                            </thead>
+                            <tbody class="">
+                                {% for invitation in invitations %}
+                                    {% if invitation.guest.email == app.user.email %}
+                                        <tr>
+                                            <td>{{ invitation.title }}</td>
+                                            <td>{{ invitation.invited_at|date('d/M/Y') }}</td>
+                                            <td>{{ invitation.sender.username }}</td>
+                                            <td>{{ invitation.state }}</td>
+                                            <td class="align-middle pr-0 text-right">
+                                                <a href="{{ path('invitation_confirm', {uuid: invitation.uuid}) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md"><i class="la la-check"></i></a>
+                                                <a href="{{ path('invitation_refuse', {uuid: invitation.uuid}) }}" class="btn btn-sm btn-clean btn-icon btn-icon-md"><i class="la la-close"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}

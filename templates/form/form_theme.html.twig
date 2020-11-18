@@ -1,0 +1,70 @@
+{% extends 'bootstrap_4_layout.html.twig' %}
+
+{% block form_label_errors %}{% endblock form_label_errors %}
+
+{% block form_row -%}
+    {%- if compound is defined and compound -%}
+        {%- set element = 'fieldset' -%}
+    {%- endif -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <{{ element|default('div') }} class="form-group">
+    {{- form_label(form) -}}
+    {{- form_widget(form, widget_attr) -}}
+    {{- form_errors(form) -}}
+    {{- form_help(form) -}}
+    </{{ element|default('div') }}>
+{%- endblock form_row %}
+
+{% block checkbox_widget -%}
+    {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' kt-checkbox')|trim}) -%}
+
+    {% if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+
+    <label{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
+        {{- label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) -}}
+        <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} /> <span></span>
+    </label>
+{%- endblock checkbox_widget %}
+
+{% block radio_widget -%}
+    {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' kt-radio')|trim}) -%}
+
+    {% if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+
+    <label{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
+        {{- label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) -}}
+        <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} /> <span></span>
+    </label>
+{%- endblock radio_widget %}
+
+{% block select2_widget %}
+    {% set attr = attr|merge({'class': (attr.class|default('') ~ ' m-select2 kt_select2_global')|trim}) -%}
+    {% set attr = attr|merge({'data-autocomplete-url': autocomplete_url}) -%}
+    {% set attr = attr|merge({'data-tags': tags}) -%}
+
+    {{- block('choice_widget') -}}
+{% endblock %}
+
+
+
